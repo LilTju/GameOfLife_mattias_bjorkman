@@ -10,7 +10,7 @@ public class GameOfLife : MonoBehaviour
     int aliveNeighbors;
     float cellSize = 0.25f; //Size of our cells
     int numberOfColums, numberOfRows;
-    int spawnChancePercentage = 5;
+    int spawnChancePercentage = 100;
 
     void Start()
     {
@@ -59,32 +59,32 @@ public class GameOfLife : MonoBehaviour
     void Update()
     {
         //TODO: Calculate next generation
-        for (int y = 0; y < numberOfRows; y++)
-        {
-            for (int x = 0; x < numberOfColums; x++)
-            {
-                if (cells[x, y].alive)
-                {
-                    aliveNeighbors = CheckNeighbors(cells, x, y);
+        //for (int y = 0; y < numberOfRows; y++)
+        //{
+        //    for (int x = 0; x < numberOfColums; x++)
+        //    {
+        //        if (cells[x, y].alive)
+        //        {
+        //            aliveNeighbors = CheckNeighbors(cells, x, y);
 
-                    if (aliveNeighbors < 2 || aliveNeighbors > 3)
-                        nextCells[x, y].alive = false;
-                    else
-                        nextCells[x, y].alive = true;
-                }
+        //            if (aliveNeighbors < 2 || aliveNeighbors > 3)
+        //                nextCells[x, y].alive = false;
+        //            else
+        //                nextCells[x, y].alive = true;
+        //        }
 
-                if (!cells[x, y].alive)
-                {
-                    aliveNeighbors = CheckNeighbors(cells, x, y);
+        //        if (!cells[x, y].alive)
+        //        {
+        //            aliveNeighbors = CheckNeighbors(cells, x, y);
 
-                    if (aliveNeighbors == 3)
-                        nextCells[x, y].alive = true;
-                }
-            }
-        }
+        //            if (aliveNeighbors == 3)
+        //                nextCells[x, y].alive = true;
+        //        }
+        //    }
+        //}
 
-        //TODO: update buffer
-        cells = nextCells;
+        ////TODO: update buffer
+        //cells = nextCells;
 
 
         for (int y = 0; y < numberOfRows; y++)
