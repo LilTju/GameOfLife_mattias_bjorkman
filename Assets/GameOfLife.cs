@@ -1,16 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GameOfLife : MonoBehaviour
 {
     public GameObject cellPrefab;
     Cell[,] cells;
-    Cell[,] nextCells;
-    int aliveNeighbors;
     float cellSize = 0.25f; //Size of our cells
     int numberOfColums, numberOfRows;
-    int spawnChancePercentage = 100;
+    int spawnChancePercentage = 20;
+    int outerLayer = 2;
 
     void Start()
     {
@@ -20,20 +20,20 @@ public class GameOfLife : MonoBehaviour
 
         //Calculate our grid depending on size and cellSize
         numberOfColums = (int)Mathf.Floor((Camera.main.orthographicSize *
-            Camera.main.aspect * 2) / cellSize);
-        numberOfRows = (int)Mathf.Floor(Camera.main.orthographicSize * 2 / cellSize);
+            Camera.main.aspect * 2) / cellSize + outerLayer);
+        numberOfRows = (int)Mathf.Floor(Camera.main.orthographicSize * 2
+            / cellSize + outerLayer);
 
         //Initiate our matrix array
         cells = new Cell[numberOfColums, numberOfRows];
-        nextCells = new Cell[numberOfColums, numberOfRows];
 
         //Create all objects
 
         //For each row
-        for (int y = 0; y < numberOfRows; y++)
+        for (int y = 1; y < numberOfRows - 1; y++)
         {
             //for each column in each row
-            for (int x = 0; x < numberOfColums; x++)
+            for (int x = 1; x < numberOfColums - 1; x++)
             {
                 //Create our game cell objects, multiply by cellSize for correct world placement
                 Vector2 newPos = new Vector2(x * cellSize - Camera.main.orthographicSize *
@@ -59,64 +59,86 @@ public class GameOfLife : MonoBehaviour
     void Update()
     {
         //TODO: Calculate next generation
-        //for (int y = 0; y < numberOfRows; y++)
-        //{
-        //    for (int x = 0; x < numberOfColums; x++)
-        //    {
-        //        if (cells[x, y].alive)
-        //        {
-        //            aliveNeighbors = CheckNeighbors(cells, x, y);
-
-        //            if (aliveNeighbors < 2 || aliveNeighbors > 3)
-        //                nextCells[x, y].alive = false;
-        //            else
-        //                nextCells[x, y].alive = true;
-        //        }
-
-        //        if (!cells[x, y].alive)
-        //        {
-        //            aliveNeighbors = CheckNeighbors(cells, x, y);
-
-        //            if (aliveNeighbors == 3)
-        //                nextCells[x, y].alive = true;
-        //        }
-        //    }
-        //}
-
-        ////TODO: update buffer
-        //cells = nextCells;
-
-
-        for (int y = 0; y < numberOfRows; y++)
+        for (int y = 1; y < numberOfRows - 1; y++)
         {
-            for (int x = 0; x < numberOfColums; x++)
+            for (int x = 1; x < numberOfColums - 1; x++)
             {
+                if (cells[x, y].alive)
+                {
+                    if (cells[x - 1, y - 1] != null)
+                        cells[x - 1, y - 1].aliveNeighbors++;
+
+                    if (cells[x, y - 1] != null)
+                        cells[x, y - 1].aliveNeighbors++;
+
+                    if (cells[x + 1, y - 1] != null)
+                        cells[x + 1, y - 1].aliveNeighbors++;
+
+                    if (cells[x - 1, y] != null)
+                        cells[x - 1, y].aliveNeighbors++;
+
+                    if (cells[x, y + 1] != null)
+                        cells[x, y + 1].aliveNeighbors++;
+
+                    if (cells[x - 1, y + 1] != null)
+                        cells[x - 1, y + 1].aliveNeighbors++;
+
+                    if (cells[x, y + 1] != null)
+                        cells[x, y + 1].aliveNeighbors++;
+
+                    if (cells[x + 1, y + 1] != null)
+                        cells[x + 1, y + 1].aliveNeighbors++;
+                }
+            }
+        }
+
+        //TODO: update buffer
+
+
+        for (int y = 1; y < numberOfRows - 1; y++)
+        {
+            for (int x = 1; x < numberOfColums - 1; x++)
+            {
+                if (cells[x, y].alive)
+                {
+                    if (cells[x, y].aliveNeighbors < 2 || cells[x, y].aliveNeighbors > 3)
+                        cells[x, y].alive = false;
+                }
+                else
+                    if (cells[x, y].aliveNeighbors == 3)
+                    cells[x, y].alive = true;
+
                 cells[x, y].UpdateStatus();
+
+                cells[x, y].aliveNeighbors = 0;
             }
         }
     }
 
-    public int CheckNeighbors(Cell[,] cells, int x, int y)
+    public void CheckNeighbors(Cell[,] cells, int x, int y)
     {
-        int aliveNeighbors = 0;
+        if (cells[x - 1, y - 1] != null)
+            cells[x - 1, y - 1].aliveNeighbors++;
 
-        if (cells[x - 1, y - 1].alive)
-            aliveNeighbors++;
-        if (cells[x, y - 1].alive)
-            aliveNeighbors++;
-        if (cells[x + 1, y - 1].alive)
-            aliveNeighbors++;
-        if (cells[x - 1, y].alive)
-            aliveNeighbors++;
-        if (cells[x, y + 1].alive)
-            aliveNeighbors++;
-        if (cells[x - 1, y + 1].alive)
-            aliveNeighbors++;
-        if (cells[x, y + 1].alive)
-            aliveNeighbors++;
-        if (cells[x + 1, y + 1].alive)
-            aliveNeighbors++;
+        if (cells[x, y - 1] != null)
+            cells[x, y - 1].aliveNeighbors++;
 
-        return aliveNeighbors;
+        if (cells[x + 1, y - 1] != null)
+            cells[x + 1, y - 1].aliveNeighbors++;
+
+        if (cells[x - 1, y] != null)
+            cells[x - 1, y].aliveNeighbors++;
+
+        if (cells[x, y + 1] != null)
+            cells[x, y + 1].aliveNeighbors++;
+
+        if (cells[x - 1, y + 1] != null)
+            cells[x - 1, y + 1].aliveNeighbors++;
+
+        if (cells[x, y + 1] != null)
+            cells[x, y + 1].aliveNeighbors++;
+
+        if (cells[x + 1, y + 1] != null)
+            cells[x + 1, y + 1].aliveNeighbors++;
     }
 }

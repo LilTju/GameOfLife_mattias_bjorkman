@@ -5,15 +5,14 @@ using UnityEngine;
 public class Cell : MonoBehaviour
 {
     public bool alive;
+    public int aliveNeighbors;
+
 
     SpriteRenderer spriteRenderer;
 
     public void UpdateStatus()
     {
         spriteRenderer ??= GetComponent<SpriteRenderer>();
-
-        //if (spriteRenderer == null )
-        //	spriteRenderer = GetComponent<SpriteRenderer>();
 
         spriteRenderer.enabled = alive;
     }
