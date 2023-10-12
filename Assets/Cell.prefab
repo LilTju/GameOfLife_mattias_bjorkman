@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fcf304274f2c60847a8b735eaa343af2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -97,5 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a38d6b7e7f607a04b8ce0961f9b45cfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  miniLife: {fileID: 21300000, guid: fcf304274f2c60847a8b735eaa343af2, type: 3}
+  gigaLife: {fileID: 21300000, guid: a08e02c61722042438789fac6e27d968, type: 3}
+  dyingLife: {fileID: 21300000, guid: 90a76c42e8fdd3d43a5719c6b9b08566, type: 3}
   alive: 0
   aliveNeighbors: 0
