@@ -12,3 +12,5 @@ been alive for more than one generation, and brown ones have just died. While in
 the user can go back to the start menu by clicking the "Back to Menu" button.
 
 Enjoy!
+
+Mattias Björkman, GP23
