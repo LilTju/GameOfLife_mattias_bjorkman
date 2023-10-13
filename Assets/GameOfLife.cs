@@ -1,22 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class GameOfLife : MonoBehaviour
 {
     public GameObject cellPrefab;
+    public UnityEngine.UI.Slider playSpeedSlider;
+    float playSpeed = 0.4f;
     Cell[,] cells;
     float cellSize = 0.1f; //Size of our cells
     int numberOfColums, numberOfRows;
-    int spawnChancePercentage = 20;
+    int spawnChancePercentage = MuleScript.initialCellCount;
     int outerLayer = 2;
 
     void Start()
     {
+        Camera mainCamera = Camera.main;
+        mainCamera.orthographicSize = MuleScript.initialMapSize;
+
         //Lower framerate makes it easier to test and see whats happening.
         QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 20;
+        Application.targetFrameRate = 8;
 
         //Calculate our grid depending on size and cellSize
         numberOfColums = (int)Mathf.Floor((Camera.main.orthographicSize *
@@ -67,6 +73,8 @@ public class GameOfLife : MonoBehaviour
 
     void Update()
     {
+        Time.timeScale = playSpeed;
+
         //TODO: Calculate next generation
         for (int y = 1; y < numberOfRows - 1; y++)
         {
@@ -112,30 +120,9 @@ public class GameOfLife : MonoBehaviour
         }
     }
 
-    //public void CheckNeighbors(Cell[,] cells, int x, int y)
-    //{
-    //    if (cells[x - 1, y - 1] != null)
-    //        cells[x - 1, y - 1].aliveNeighbors++;
-
-    //    if (cells[x, y - 1] != null)
-    //        cells[x, y - 1].aliveNeighbors++;
-
-    //    if (cells[x + 1, y - 1] != null)
-    //        cells[x + 1, y - 1].aliveNeighbors++;
-
-    //    if (cells[x - 1, y] != null)
-    //        cells[x - 1, y].aliveNeighbors++;
-
-    //    if (cells[x, y + 1] != null)
-    //        cells[x, y + 1].aliveNeighbors++;
-
-    //    if (cells[x - 1, y + 1] != null)
-    //        cells[x - 1, y + 1].aliveNeighbors++;
-
-    //    if (cells[x, y + 1] != null)
-    //        cells[x, y + 1].aliveNeighbors++;
-
-    //    if (cells[x + 1, y + 1] != null)
-    //        cells[x + 1, y + 1].aliveNeighbors++;
-    //}
+    public void UpdatePlaySpeed() 
+    {
+        playSpeed = playSpeedSlider.value;
+        Debug.Log(playSpeed);
+    }
 }
