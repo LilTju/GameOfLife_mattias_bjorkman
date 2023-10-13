@@ -22,7 +22,7 @@ public class GameOfLife : MonoBehaviour
 
         //Lower framerate makes it easier to test and see whats happening.
         QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 8;
+        Application.targetFrameRate = 6;
 
         //Calculate our grid depending on size and cellSize
         numberOfColums = (int)Mathf.Floor((Camera.main.orthographicSize *
